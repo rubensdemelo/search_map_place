@@ -1,4 +1,4 @@
-# search_map_place
+# search_map_place_v2
 
 This is a Flutter package that uses the Google Maps API to make a TextField that tries to autocomplete places as the user types, with simple smooth animations, providing a nice UI and UX.
 This will also provide great information about the user selected place, like the coordinates, the bounds to determine the zoom of the GoogleMap widget, and so on.
@@ -13,7 +13,7 @@ To install, add it to your `pubspec.yaml` file:
 
 ```
 dependencies:
-    search_map_place: <latest>
+    search_map_place_v2: <latest>
 ```
 
 After that, make sure you have the following APIs activated in your Google Cloud Platform:
