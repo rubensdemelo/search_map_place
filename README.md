@@ -15,7 +15,7 @@ To install, add it to your `pubspec.yaml` file:
 
 ```
 dependencies:
-    search_map_place_v2: <latest>
+  search_map_place_v2: <latest>
 ```
 
 After that, make sure you have the following APIs activated in your Google Cloud Platform:
