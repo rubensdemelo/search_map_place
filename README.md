@@ -17,6 +17,7 @@ dependencies:
 ```
 
 After that, make sure you have the following APIs activated in your Google Cloud Platform:
+
 - Places
 - Geolocation
 - Geocoding
@@ -24,7 +25,7 @@ After that, make sure you have the following APIs activated in your Google Cloud
 You can now import it to your file and use it on your app.
 
 ```dart
-import 'package:search_map_place/search_map_place.dart';
+import 'package:search_map_place_v2/search_map_place_v2.dart';
 ```
 
 ## How to use it
@@ -44,8 +45,9 @@ Widget build(BuildContext context) {
 ```
 
 The constructor has 7 attributes related to the API:
+
 - `String apiKey` is the only required attribute. It is the Google Maps API Key your application is using
-- `(Place) void onSelected` is a callback function called when the user selects one of the autocomplete options. 
+- `(Place) void onSelected` is a callback function called when the user selects one of the autocomplete options.
 - `(Place) void onSearch` is a callback function called when the user clicks on the search icon.
 - `String language` is the Language used for the autocompletion. Default is 'en' (english). Check the full list of [supported languages](https://developers.google.com/maps/faq#languagesupport) for the Google Maps API
 - `LatLng location` is the point around which you wish to retrieve place information. If this value is provided, `radius` must be provided aswell.
@@ -58,12 +60,14 @@ The constructor has 7 attributes related to the API:
 This class will be returned on the `onSelected` and `onSearch` methods. It allows us to get more information about the user selected place.
 
 Initially, it provides you with only basic information:
+
 - `description` contains the human-readable name for the returned result. For establishment results, this is usually the business name.
 - `placeId`A textual identifier that uniquely identifies a place. For more information about place IDs, see the [Place IDs](https://developers.google.com/places/web-service/place-id) overview.
 - `types` contains an array of types that apply to this place. The array can contain multiple values. Learn more about [Place types](https://developers.google.com/places/web-service/supported_types).
 - `fullJSON` has the full JSON response received from the Places API. Can be used to extract extra information. More info on the [Places Autocomplete API documentation](https://developers.google.com/places/web-service/autocomplete)
 
 However, you can get more information like the `coordinates` and the `bounds` of the place by calling
+
 ```dart
 await myPlace.geolocation;
 ```

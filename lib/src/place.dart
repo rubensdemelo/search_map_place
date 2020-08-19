@@ -1,4 +1,5 @@
-part of search_map_place;
+import 'geocoding.dart';
+import 'geolocation.dart';
 
 class Place {
   Place(
@@ -7,19 +8,18 @@ class Place {
     this.placeId,
     this.types,
   }) {
-    this._geocode = geocode;
+    _geocode = geocode;
   }
 
   Place.fromJSON(place, Geocoding geocode) {
     try {
-      this.description = place["description"];
-      this.placeId = place["place_id"];
-      this.types = place["types"];
-
-      this._geocode = geocode;
-      this.fullJSON = place;
+      description = place['description'];
+      placeId = place['place_id'];
+      types = place['types'];
+      _geocode = geocode;
+      fullJSON = place;
     } catch (e) {
-      print("The argument you passed for Place is not compatible.");
+      print('The argument you passed for Place is not compatible.');
     }
   }
 
@@ -44,7 +44,7 @@ class Place {
   ///
   /// All of its information can be accessed like a regular [Map]. For example:
   /// ```
-  /// fullJSON["structured_formating"]["main_text"]
+  /// fullJSON['structured_formating']['main_text']
   /// ```
   var fullJSON;
 
@@ -55,8 +55,8 @@ class Place {
   ///
   /// Learn more at [Geolocation docs](https://developers.google.com/maps/documentation/geolocation/intro)
   Future<Geolocation> get geolocation async {
-    if (this._geolocation == null) {
-      this._geolocation = await _geocode.getGeolocation(description);
+    if (_geolocation == null) {
+      _geolocation = await _geocode.getGeolocation(description);
       return _geolocation;
     }
     return _geolocation;

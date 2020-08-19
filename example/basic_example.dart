@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:search_map_place/search_map_place.dart';
+import 'package:search_map_place_v2/search_map_place_v2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 String apiKEY;
@@ -25,9 +25,9 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  Completer<GoogleMapController> _mapController = Completer();
+  final _mapController = Completer();
 
-  final CameraPosition _initialCamera = CameraPosition(
+  final CameraPosition _initialCamera = const CameraPosition(
     target: LatLng(-20.3000, -40.2990),
     zoom: 14.0000,
   );
@@ -52,9 +52,12 @@ class MapSampleState extends State<MapSample> {
               apiKey: apiKEY,
               onSelected: (place) async {
                 final geolocation = await place.geolocation;
-                final GoogleMapController controller = await _mapController.future;
-                controller.animateCamera(CameraUpdate.newLatLng(geolocation.coordinates));
-                controller.animateCamera(CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
+                final GoogleMapController controller =
+                    await _mapController.future;
+                await controller.animateCamera(
+                    CameraUpdate.newLatLng(geolocation.coordinates));
+                await controller.animateCamera(
+                    CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
               },
             ),
           ),

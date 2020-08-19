@@ -1,6 +1,6 @@
 ///
-/// AVANCED EXAMPLE:
-/// Screen with map and search box on top. When the user selects a place through autocompletion,
+/// ADVANCED EXAMPLE:
+/// Screen with map and search box on top. When users selects a place through autocompletion,
 /// the screen is moved to the selected location, a path that demonstrates the route is created, and a "start route"
 /// box slides in to the screen.
 ///
@@ -9,13 +9,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:search_map_place/search_map_place.dart';
+import 'package:search_map_place_v2/search_map_place_v2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 
-const String apiKEY = "";
+const String apiKEY = '';
 
 void main() => runApp(MyApp());
 
@@ -34,19 +34,20 @@ class MapPage extends StatefulWidget {
   State<MapPage> createState() => MapSampleState();
 }
 
-class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin {
-  Completer<GoogleMapController> _mapController = Completer();
+class MapSampleState extends State<MapPage>
+    with SingleTickerProviderStateMixin {
+  final _mapController = Completer();
 
   String _mapStyle;
   List<LatLng> _polylinePoints = [];
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
 
   AnimationController _ac;
   Animation<Offset> _animation;
 
   Place _selectedPlace;
 
-  final CameraPosition _initialCamera = CameraPosition(
+  final CameraPosition _initialCamera = const CameraPosition(
     target: LatLng(-20.3000, -40.2990),
     zoom: 14.0000,
   );
@@ -61,12 +62,11 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
     });
 
     _ac = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 750),
+      duration: const Duration(milliseconds: 750),
     );
     _animation = Tween<Offset>(
-      begin: Offset(-1.0, 2.75),
-      end: Offset(0.05, 2.75),
+      begin: const Offset(-1.0, 2.75),
+      end: const Offset(0.05, 2.75),
     ).animate(CurvedAnimation(
       curve: Curves.easeOut,
       parent: _ac,
@@ -85,8 +85,7 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
             markers: _markers,
 
             // Adds Path from user to selected location
-            polylines: Set()
-              ..add(
+            polylines: <Polyline>{}..add(
                 Polyline(
                   polylineId: PolylineId('path'),
                   points: _polylinePoints,
@@ -102,13 +101,13 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
               _mapController.complete(controller);
 
               // Changes the Map Style
-              controller.setMapStyle(_mapStyle);
+              await controller.setMapStyle(_mapStyle);
 
               // Creates Marker on current user location, using a current icon.
               final userLocation = Marker(
                 markerId: MarkerId('user-location'),
                 icon: await BitmapDescriptor.fromAssetImage(
-                  ImageConfiguration(
+                  const ImageConfiguration(
                     devicePixelRatio: 2.5,
                   ),
                   'assets/user_location.png',
@@ -126,8 +125,8 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
             left: MediaQuery.of(context).size.width * 0.05,
             child: SearchMapPlaceWidget(
               apiKey: apiKEY,
-              icon: IconData(0xE8BD, fontFamily: 'feather'),
-              clearIcon: IconData(0xE8F6, fontFamily: 'feather'),
+              icon: const IconData(0xE8BD, fontFamily: 'feather'),
+              clearIcon: const IconData(0xE8F6, fontFamily: 'feather'),
               iconColor: Colors.teal[200].withOpacity(0.8),
               placeType: PlaceType.establishment,
               location: _initialCamera.target,
@@ -136,8 +135,8 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
                 final geolocation = await place.geolocation;
 
                 // Using the `flutter_polyline_points` library to get the needed data to create the path.
-                PolylinePoints polylineGetter = PolylinePoints();
-                List<PointLatLng> result = await polylineGetter.getRouteBetweenCoordinates(
+                final polylineGetter = PolylinePoints();
+                final result = await polylineGetter.getRouteBetweenCoordinates(
                   apiKEY,
                   _initialCamera.target.latitude,
                   _initialCamera.target.longitude,
@@ -145,17 +144,18 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
                   geolocation.coordinates.longitude,
                 );
 
-                List<LatLng> polylineCoordinates = [];
+                final polylineCoordinates = [];
 
                 for (var point in result) {
-                  polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+                  polylineCoordinates
+                      .add(LatLng(point.latitude, point.longitude));
                 }
 
                 // Adding marker to the selected location using a custom icon.
                 final destination = Marker(
                   markerId: MarkerId('user-destination'),
                   icon: await BitmapDescriptor.fromAssetImage(
-                    ImageConfiguration(
+                    const ImageConfiguration(
                       devicePixelRatio: 2.5,
                     ),
                     'assets/pin.png',
@@ -163,7 +163,8 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
                   position: geolocation.coordinates,
                 );
 
-                final GoogleMapController controller = await _mapController.future;
+                final GoogleMapController controller =
+                    await _mapController.future;
                 setState(() {
                   _selectedPlace = place;
                   _polylinePoints = polylineCoordinates;
@@ -171,8 +172,10 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
                 });
 
                 // Animates the Google Maps camera
-                controller.animateCamera(CameraUpdate.newLatLng(geolocation.coordinates));
-                controller.animateCamera(CameraUpdate.newLatLngBounds(geolocation.bounds, 100));
+                await controller.animateCamera(
+                    CameraUpdate.newLatLng(geolocation.coordinates));
+                await controller.animateCamera(
+                    CameraUpdate.newLatLngBounds(geolocation.bounds, 100));
 
                 // Animates the "start route" box in to the screen
                 _ac.forward();
@@ -198,7 +201,7 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
-            BoxShadow(
+            const BoxShadow(
               blurRadius: 10,
               color: Colors.black12,
               spreadRadius: 15.0,
@@ -211,28 +214,29 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
             Text(
               (_selectedPlace != null)
                   ? (_selectedPlace.description.length < 25
-                      ? "${_selectedPlace.description}"
+                      ? '${_selectedPlace.description}'
                       : "${_selectedPlace.description.replaceRange(25, _selectedPlace.description.length, "")} ...")
-                  : "",
-              style: TextStyle(
+                  : '',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 26.0,
               ),
             ),
-            SizedBox(height: 5),
-            Text(
-              "Estimative: 12 minutes",
+            const SizedBox(height: 5),
+            const Text(
+              'Estimative: 12 minutes',
               style: TextStyle(color: Colors.black54),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 FlatButton(
                   onPressed: () {},
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  child: Text(
-                    "Start Route",
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: const Text(
+                    'Start Route',
                     style: TextStyle(fontSize: 16),
                   ),
                   color: Colors.teal[200].withOpacity(0.8),
