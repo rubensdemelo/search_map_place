@@ -63,6 +63,7 @@ class MapSampleState extends State<MapPage>
 
     _ac = AnimationController(
       duration: const Duration(milliseconds: 750),
+      vsync: this,
     );
     _animation = Tween<Offset>(
       begin: const Offset(-1.0, 2.75),
@@ -180,7 +181,7 @@ class MapSampleState extends State<MapPage>
                     CameraUpdate.newLatLngBounds(geolocation.bounds, 100));
 
                 // Animates the "start route" box in to the screen
-                _ac.forward();
+                await _ac.forward();
               },
             ),
           ),

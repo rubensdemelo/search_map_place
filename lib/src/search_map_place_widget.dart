@@ -170,16 +170,17 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
                       const EdgeInsets.only(left: 12.0, right: 12.0, top: 4),
                   child: child,
                 ),
-                if (_placePredictions.isEmpty)
-                  Opacity(
-                    opacity: _listOpacity.value,
-                    child: Column(
-                      children: <Widget>[
-                        for (var prediction in _placePredictions)
-                          _placeOption(Place.fromJSON(prediction, geocode)),
-                      ],
-                    ),
+                // TODO
+                // if (_placePredictions.isEmpty)
+                Opacity(
+                  opacity: _listOpacity.value,
+                  child: Column(
+                    children: <Widget>[
+                      for (var prediction in _placePredictions)
+                        _placeOption(Place.fromJSON(prediction, geocode)),
+                    ],
                   ),
+                ),
               ],
             ),
           );
@@ -239,7 +240,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
               : '${place.replaceRange(45, place.length, "")} ...',
           style: TextStyle(
             fontSize: MediaQuery.of(context).size.width * 0.04,
-            color: widget.darkMode ? Colors.grey[100] : Colors.grey[850],
+            // color: widget.darkMode ? Colors.grey[100] : Colors.grey[850],
           ),
           maxLines: 1,
         ),
@@ -377,7 +378,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
       _placePredictions = [];
       _isEditing = false;
     });
-    _animationController.reverse();
+    await _animationController.reverse();
     _textEditingController.addListener(_autocompletePlace);
   }
 

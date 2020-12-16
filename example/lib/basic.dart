@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:search_map_place_v2/search_map_place_v2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-String apiKEY;
+String apiKEY = 'YOUR KEY HERE';
 
 void main() => runApp(MyApp());
 
@@ -29,7 +29,7 @@ class MapSampleState extends State<MapSample> {
 
   final CameraPosition _initialCamera = const CameraPosition(
     target: LatLng(-20.3000, -40.2990),
-    zoom: 14.0000,
+    zoom: 14,
   );
 
   @override
