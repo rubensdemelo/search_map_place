@@ -1,6 +1,6 @@
 name: search_map_place_v2
 description: A Search Widget that allows users to search for a place while getting autocompletion feedback.
-version: 0.1.0-dev
+version: 0.1.1-dev
 homepage: https://github.com/rubensdemelo/search_map_place_v2
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_maps_flutter: ^0.5.30
+  google_maps_flutter: ^1.0.6
   http: ^0.12.2
 
 dev_dependencies:

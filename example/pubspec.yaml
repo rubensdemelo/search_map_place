@@ -9,7 +9,7 @@ environment:
 dependencies:
   search_map_place_v2:
     path: ../
-  flutter_polyline_points:
+  flutter_polyline_points: ^0.2.4
   flutter:
     sdk: flutter
 

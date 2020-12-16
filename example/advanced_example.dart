@@ -138,15 +138,17 @@ class MapSampleState extends State<MapPage>
                 final polylineGetter = PolylinePoints();
                 final result = await polylineGetter.getRouteBetweenCoordinates(
                   apiKEY,
-                  _initialCamera.target.latitude,
-                  _initialCamera.target.longitude,
-                  geolocation.coordinates.latitude,
-                  geolocation.coordinates.longitude,
+                  PointLatLng(_initialCamera.target.latitude,
+                      _initialCamera.target.longitude),
+                  PointLatLng(
+                    geolocation.coordinates.latitude,
+                    geolocation.coordinates.longitude,
+                  ),
                 );
 
                 final polylineCoordinates = [];
 
-                for (var point in result) {
+                for (var point in result.points) {
                   polylineCoordinates
                       .add(LatLng(point.latitude, point.longitude));
                 }
